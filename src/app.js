@@ -1,4 +1,6 @@
 const express = require("express");
+
+const cors = require("cors");
 const http = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
@@ -21,6 +23,9 @@ const initializePassport = require("./passport/local");
 // models
 const chatModel = require("./models/chatModel");
 
+// controllers
+const chatController = require("./controllers/chat.controller");
+
 // initialize Passport
 initializePassport(passport);
 
@@ -28,6 +33,8 @@ initializePassport(passport);
 const { mongoConfig } = require("./config");
 
 const { HOSTNAME, SCHEMA, OPTIONS, DATABASE, USER, PASSWORD } = mongoConfig;
+
+const graphql = require("./graphql"); 
 
 // websocket
 const app = express();
@@ -44,8 +51,22 @@ swaggerMiddleware(app);
 
 templateEngine(app);
 
-apllyGraphQL = require("./graphQL");
 
+// CORS
+const corsCallback = (req, cb) => {
+  const origin = req.header('Origin')
+  const allowedHosts = ['http://localhost:3000', 'http://localhost:8080', 'https://localhost:3000', 'https://localhost:8080']
+
+  console.log(req.method, req.url)
+
+  if (allowedHosts.includes(origin)) {
+    cb(null, { origin: true })
+  } else {
+    cb(null, { origin: true })
+  }
+}
+app.use(cors(corsCallback));
+graphql(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(path.join(__dirname, "../public")));
@@ -85,7 +106,7 @@ io.on("connection", async (socket) => {
   io.sockets.emit("msjs", msjs);
 
   // obtengo los mensajes normalizados
-  const norm = await chatModel.getNorm();
+  const norm = await chatController.getNorm;
   socket.emit("msNorm", norm);
 });
 

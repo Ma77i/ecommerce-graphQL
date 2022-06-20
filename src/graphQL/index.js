@@ -3,9 +3,17 @@ const schema = require("./schema");
 const products = require("./resolvers/products");
 
 module.exports = (app) => {
-    app.use("graphql", graphqlHTTP({
+  try {
+    app.use(
+      "/graphql",
+      graphqlHTTP({
         schema,
         rootValue: products,
         graphiql: true
-    }));
-}
+      })
+    );
+
+  } catch (error) {
+    console.log(error);
+  }
+};

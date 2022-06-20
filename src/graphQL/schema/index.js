@@ -23,7 +23,7 @@ const schema = `
     }
 
     type Query {
-        getProducts: [Product]
+        getAllProducts: [Product]
     }
 
     type Mutation {

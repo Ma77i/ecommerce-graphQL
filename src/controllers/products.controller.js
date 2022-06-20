@@ -19,7 +19,7 @@ module.exports = {
     }
 
     logger.info(`Productos listados: ${products}`);
-    res.status(200).send(products);
+    return res.send(products);
   },
 
   // obtener producto por id

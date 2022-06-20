@@ -18,9 +18,33 @@ module.exports = {
     title: "Prueba axios",
     price: 0000,
     description: "prueba axios",
-    thumbnail: "",
+    thumbnail: faker.image.imageUrl(),
     stock: 0000,
     code: 0000,
     timestamp: Date.now()
-  })
+  }),
+
+  createUser: async () => ({
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    timestamp: Date.now(),
+    avatar: faker.image.imageUrl(),
+    userName: faker.internet.userName(),
+    phone: faker.phone.phoneNumber(),
+    adress: faker.address.streetAddress()
+  }),
+
+  updateUser: async () => ({
+    firstName: "Pruebaaxios",
+    lastName: "Pruebaaxios",
+    email: "",
+    password: "",
+    timestamp: Date.now(),
+    avatar: faker.image.imageUrl(),
+    userName: "",
+    phone: faker.phone.phoneNumber(),
+    adress: faker.address.streetAddress()
+  }),
 };

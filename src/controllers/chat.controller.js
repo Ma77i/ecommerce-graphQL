@@ -1,5 +1,5 @@
 // normalizr
-// const { schema, normalize } = require("normalizr");
+const { schema, normalize } = require("normalizr");
 
 // models
 const chatModel = require("../models/chatModel");
@@ -19,11 +19,12 @@ module.exports = {
     const { id } = req.params;
     console.log("POSTMAN: ", id);
     try {
+      
       const byId = await chatModel.getById(id);
       res.status(200).send(byId);
     } catch (error) {
-      console.log(error);
       res.status(500);
+      console.log(error);
     }
   },
 
@@ -65,32 +66,33 @@ module.exports = {
       console.log(error);
       res.status(500).send(error);
     }
+  },
+
+  getNorm: async () => {
+    const author = new schema.Entity("authors", {}, { idAttribute: "mail" });
+    const chat = new schema.Entity("chats", {
+      author: author
+    });
+
+    const data = new schema.Entity("data", {
+      chats: [chat]
+    });
+
+    const chatDB = await chatModel.find({});
+
+    const normalizedData = normalize(
+      {
+        id: "chats",
+        mensajes: chatDB.map((d) => {
+          author: d.author;
+          text: d.text;
+          date: d.date;
+          id: d._id.toString();
+        })
+      },
+      data
+    );
+    console.log(normalizedData);
+    return normalizedData;
   }
-
-  // getNorm: async () => {
-  //   const author = new schema.Entity("authors", {}, { idAttribute: "mail" });
-  //   const chat = new schema.Entity("chats", {
-  //     author: author
-  //   });
-
-  //   const data = new schema.Entity("data", {
-  //     chats: [chat]
-  //   });
-
-  //   const chatDB = await this.model.find({});
-
-  //   const normalizedData = normalize(
-  //     {
-  //       id: "chats",
-  //       mensajes: chatDB.map((d) => {
-  //         author: d.author;
-  //         text: d.text;
-  //         date: d.date;
-  //         id: d._id.toString();
-  //       })
-  //     },
-  //     data
-  //   );
-  //   return normalizedData;
-  // }
 };
