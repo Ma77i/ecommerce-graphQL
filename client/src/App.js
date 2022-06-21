@@ -8,6 +8,7 @@ import ItemDetailContainer from "./components/Items/ItemDetailContainer";
 import Home from "./components/Home";
 
 const App = () => {
+
   return (
     <Router>
       <>

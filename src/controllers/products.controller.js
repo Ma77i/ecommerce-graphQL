@@ -1,5 +1,5 @@
 // import model
-const productModel = require("../models/productsModel");
+const productModel = require("../models/model.factory");
 
 const logger = require("../log");
 
@@ -13,9 +13,9 @@ module.exports = {
     if (orderBy) {
       const ord = {};
       ord[orderBy] = 1;
-      products = await productModel.find(find).sort(ord);
+      products = await productModel.getModel("product").find(find).sort(ord);
     } else {
-      products = await productModel.find(find);
+      products = await productModel.getModel("product").find(find);
     }
 
     logger.info(`Productos listados: ${products}`);
@@ -27,7 +27,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const getId = await productModel.findOne({ _id: id });
+      const getId = await productModel.getModel("product").findOne({ _id: id });
       res.status(200).send(getId);
     } catch (error) {
       logger.error(error);
@@ -40,7 +40,7 @@ module.exports = {
     const { body } = req;
 
     try {
-      const product = await productModel.create(body);
+      const product = await productModel.getModel("product").create(body);
       res.status(201).send(product);
     } catch (error) {
       logger.error(error);
@@ -54,7 +54,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const update = await productModel.updateOne({ _id: id }, { $set: body });
+      const update = await productModel.getModel("product").updateOne({ _id: id }, { $set: body });
       res.status(201).send(update);
     } catch (error) {
       logger.error(error);
@@ -67,7 +67,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      await productModel.deleteOne({ _id: id });
+      await productModel.getModel("product").deleteOne({ _id: id });
       res.status(200).send("Product deleted");
     } catch (err) {
       logger.error(`No id find${err}`);
@@ -77,7 +77,7 @@ module.exports = {
 
   // borrar todos los productos
   deleteAll: async (req, res) => {
-    await productModel.deleteMany({});
+    await productModel.getModel("product").deleteMany({});
     res.status(200).send("Se eliminaron todos los objetos");
   }
 };

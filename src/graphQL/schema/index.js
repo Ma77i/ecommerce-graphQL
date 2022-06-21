@@ -24,6 +24,7 @@ const schema = `
 
     type Query {
         getAllProducts: [Product]
+        getProduct(id: String!): Product
     }
 
     type Mutation {

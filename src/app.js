@@ -57,8 +57,6 @@ const corsCallback = (req, cb) => {
   const origin = req.header('Origin')
   const allowedHosts = ['http://localhost:3000', 'http://localhost:8080', 'https://localhost:3000', 'https://localhost:8080']
 
-  console.log(req.method, req.url)
-
   if (allowedHosts.includes(origin)) {
     cb(null, { origin: true })
   } else {

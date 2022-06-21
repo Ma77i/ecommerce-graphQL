@@ -16,11 +16,11 @@ const ItemDetail = ({ item }) => {
         component="img"
         alt="green iguana"
         height="140"
-        image={item.image}
+        image={item.thumbnail}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {item.name}
+          {item.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {item.description}

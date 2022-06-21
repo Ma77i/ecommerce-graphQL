@@ -3,27 +3,46 @@ import { useState, useEffect } from "react";
 import ItemList from "./ItemList";
 import axios from "axios";
 
-const URL = "https://localhost:8080/graphql";
+// const URL = "http://localhost:8080/graphql";
+const API_URL = "http://localhost:8080/api/products";
 
 const ItemListContainer = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(
-        URL,
-        { headers: { "Content-Type": "application/json" } }
+    axios.get(`${API_URL}`)
+      .then(({data}) => {
+          setItems(data);
+        }
       )
-      .then(({ data }) => {
-        // const { getAllProducts } = data.data;
-        // setItems(getAllProducts);
-        console.log(data);
-        setItems(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }, []);
+  
+  // useEffect(() => {
+  //   axios
+  //     .post(
+  //       URL,
+  //       {
+  //         query: `
+  //           query {
+  //             getAllProducts {
+  //               id,
+  //               title,
+  //               price,
+  //               thumbnail
+  //             }
+  //           }
+  //         `
+  //       },
+  //       { headers: { "Content-Type": "application/json" } }
+  //     )
+  //     .then(({ data }) => {
+  //       const products = data.data.getAllProducts;
+  //       setItems(products);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   return (
     <>

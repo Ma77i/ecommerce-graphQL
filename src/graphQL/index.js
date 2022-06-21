@@ -14,6 +14,6 @@ module.exports = (app) => {
     );
 
   } catch (error) {
-    console.log(error);
+    console.log("GQL ERR: ", error);
   }
 };
